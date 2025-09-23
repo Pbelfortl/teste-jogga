@@ -1,8 +1,9 @@
+'use client'
 import Backend from "@/backend";
 import { Lead } from "@/types/types";
 import { useState, useEffect } from "react";
 
-export function useLeads() {
+export default function useLeads() {
 
     const [leads, setLeads] = useState<Lead[]>([]);
 

@@ -1,5 +1,5 @@
 'use client'
-import { useLeads } from "../hooks/useLeads";
+import  useLeads  from "../hooks/useLeads";
 
 export default function View() {
 
@@ -10,7 +10,7 @@ export default function View() {
             <h1>View Leads</h1>
             <ul>
                 {leads.map(lead => (
-                    <li key={lead.id}>{lead.name} - {lead.email}</li>
+                    <li key={lead.id}>{lead.name} - {lead.email} - {lead.telefone}</li>
                 ))}
             </ul>
         </div>

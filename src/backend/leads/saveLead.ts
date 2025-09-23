@@ -4,8 +4,15 @@ export async function saveLead(data: { name: string; email: string; telefone: st
 
     const checkExisting = await getLeadByEmail(data.email);
 
-    if (checkExisting && (Date.now() - checkExisting.createdAt.getTime()) < 3600000) {
-        return { error: "Lead adquirido recentemente." };
+    try {
+
+        if (checkExisting && (Date.now() - checkExisting.createdAt.getTime()) < 3600000) {
+
+            return alert("Lead adquirido recentemente.");
+        }
+    } catch (error) {
+        console.error("Error checking existing lead:", error);
+        throw error;
     }
 
     const lead = await createLead(data);
