@@ -1,75 +1,59 @@
 'use client'
 import Image from "next/image";
 import Pulse from "../../../public/Pulse.svg";
-import  useLeads  from "../hooks/useLeads";
+import useLeads from "../hooks/useLeads";
 import { useState } from "react";
 import { Status } from "@prisma/client";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function View() {
 
-    const [statusFilter, setStatusFilter] = useState("");
-    const [dateFilter, setDateFilter] = useState("");
-    const [searchFilter, setSearchFilter] = useState("");
-    const [filter, setFilter] = useState("");
-
     const { leads, changeLeadStatus, filterLeadsByDate, filterLeadsByStatus, filterLeadsByName } = useLeads();
-    console.log(leads);
-
-    if (statusFilter) {
-        leads.filter(lead => lead.status === statusFilter);
-    }
-
-/*     function applyFilters() {
-        let filteredLeads = leads;
-        if (statusFilter) {
-            filteredLeads = filteredLeads.filter(lead => lead.status === statusFilter);
-        }
-        if (dateFilter) {
-            filteredLeads = filteredLeads.filter(lead => {
-                const leadDate = new Date(lead.createdAt);
-                const filterDate = new Date(dateFilter);
-                return leadDate.toDateString() === filterDate.toDateString();
-            });
-        }
-        if (searchFilter) {
-            filteredLeads = filteredLeads.filter(lead =>
-                lead.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-                lead.email.toLowerCase().includes(searchFilter.toLowerCase()) ||
-                lead.telefone.toLowerCase().includes(searchFilter.toLowerCase())
-            );
-        }
-        return filteredLeads;
-    } */
+    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
     return (
-        <div className="w-2/3 flex flex-col gap-4 center">
-            {leads.length === 0 && <Image src={Pulse} alt="Loading" width={100} height={100} />}
-            <div className="w-full flex justify-between">
-                <input onChange={(e) => filterLeadsByName(e.target.value)}></input>
-                <select onChange={(e) => filterLeadsByStatus(e.target.value as Status)}>
-                    <option value="">Todos</option>
-                    <option value="NEW">Novos</option>
-                    <option value="IN_CONTACT">Em contato</option>
-                    <option value="WON">Convertidos</option>
-                </select>
-                <input type="date" onChange={(e) => filterLeadsByDate(e.target.value)}></input>
-            </div>
-            <ul className="gap-6 w-full">
-                {leads.map(lead => (
-                    <li className=" flex justify-between" key={lead.id}>
-                        Nome: {lead.name} | 
-                        Email: {lead.email} | 
-                        Telefone: {lead.telefone} |
-                        Data: {(lead.createdAt).toDateString()}|
-                        Status: <select onChange={(e) => (changeLeadStatus(Number(lead.id), e.target.value)
-                        )} value={lead.status}>
-                            <option value={"NEW"}>Novo</option>
-                            <option value={"IN_CONTACT"}>Em contato</option>
-                            <option value={"WON"}>Convertido</option>
+        <>
+
+            <div className="p-4 rounded-xl bg-linear-to-t bg-black/30 shadow-xl backdrop-blur-sm w-4/5 flex flex-col gap-4 justify-center">
+                <div className="p-4 flex justify-between rounded-md bg-black/40 pb-2">
+                    <input className="p-1 rounded-md border-1 border-black" placeholder="Buscar..." onChange={(e) => filterLeadsByName(e.target.value)}></input>
+                    <div className="rounded-md p-1 border-1 border-black flex justify-center align-middle hover:cursor-pointer">
+                        <DatePicker selected={selectedDate} onChange={(date) => {
+                        setSelectedDate(date);
+                        filterLeadsByDate(new Date(date));
+                    }} />
+                    </div>
+                    <select className="rounded-md p-1 border-1 border-black" onChange={(e) => filterLeadsByStatus(e.target.value)} defaultValue="">
+                        <option className="text-black" value="">Todos</option>
+                        <option className="text-black" value="NEW">Novos</option>
+                        <option className="text-black" value="IN_CONTACT">Em contato</option>
+                        <option className="text-black" value="WON">Convertidos</option>
+                    </select>
+                </div>
+                <h1 className="text-black"><b>Leads captados:</b> {leads.length}</h1>
+                <ul className="flex flex-col justify-center align-center gap-6 w-full">
+                    {leads.length > 0 ? (leads.map(lead => (
+                        <li className="rounded-md p-2 flex justify-between bg-black/40" key={lead.id}>
+                            <b>Nome:</b> <p className="truncate">{lead.name}</p> |
+                            <b>Email:</b> <p >{lead.email}</p> |
+                            <b>Telefone:</b> <p className="hover:cursor-pointer" onClick={() => window.open(`https://wa.me/${lead.telefone}`, "_blank")} >{lead.telefone}</p> |
+                            <b>Data:</b> <p className="truncate">{(lead.createdAt).toLocaleDateString()}</p> |
+                            <b>Status:</b> <select className="rounded-sm" onChange={(e) => {
+                                changeLeadStatus(Number(lead.id), e.target.value)
+
+                            }} defaultValue={lead.status}>
+                                <option value={"NEW"}>Novo</option>
+                                <option value={"IN_CONTACT"}>Em contato</option>
+                                <option value={"WON"}>Convertido</option>
                             </select>
-                    </li>
-                ))}
-            </ul>
-        </div>
+                        </li>
+                    ))) : (
+                        <Image src={Pulse} alt="Loading..." width={24} height={24} />
+                    )}
+                </ul>
+            </div>
+
+        </>
     );
 }

@@ -8,7 +8,7 @@ export async function saveLead(data: { name: string; email: string; telefone: st
 
         if (checkExisting && (Date.now() - checkExisting.createdAt.getTime()) < 3600000) {
 
-            throw ("Lead adquirido recentemente.");
+            throw Error("Lead adquirido recentemente.");
 
         }
 

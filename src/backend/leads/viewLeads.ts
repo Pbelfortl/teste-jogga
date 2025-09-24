@@ -13,9 +13,12 @@ export async function viewLeads() {
 
 }
 
-export async function  viewLeadsByStatus(status: Status) {
+export async function  viewLeadsByStatus(status: Status | "") {
 
     try {
+        if (status == "") {
+            return await getAllLeads();
+        }
         const leads = await getLeadByStatus(status);
         return leads.filter(lead => lead.status === status);
     } catch (error) {
