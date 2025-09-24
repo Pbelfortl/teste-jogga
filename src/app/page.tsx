@@ -5,6 +5,7 @@ import { Lead } from "@/types/types";
 import useLeads from "./hooks/useLeads";
 import Pulse from "../../public/Pulse.svg";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
 
@@ -13,6 +14,7 @@ export default function Home() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const { saveLead } = useLeads();
+  const router = useRouter();
 
 
   async function handleSubmit(event: React.FormEvent) {
@@ -31,6 +33,11 @@ export default function Home() {
 
   return (
     <div className="flex justify-between items-center h-screen w-2/3 bg-no-repeat p-6 gap-4">
+      <div className="fixed top-4 right-4">
+        <button className="bg-blue-500 text-white p-2 rounded" onClick={() => router.push("/view")}>
+          Gerenciar Leads
+        </button>
+      </div>
       <h1 className="text-4xl font-bold text-blue-500 font-sans">A melhor solução em captação de leads.<br /><br /> Entre em contato conosco!</h1>
       <div className="bg-white/40 shadow-xl backdrop-blur-sm rounded-xl w-2/3 flex flex-col gap-4 justify-between p-8 items-center">
 
@@ -40,7 +47,7 @@ export default function Home() {
           <input className="bg-white p-2 rounded-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" type="number" name="telefone" maxLength={11} placeholder="Telefone" value={phone} onChange={e => setPhone(e.target.value)} />
           <div className="flex justify-center gap-4 align-middle">
             <button className="hover:cursor-pointer bg-sky-500/75 rounded-md px-4 py-2 text-white" onClick={() => setLoading(true)} type="submit">{loading ? <Image src={Pulse} alt="Loading..." width={24} height={24} /> : "Enviar"}</button>
-            
+
           </div>
         </form>
       </div>

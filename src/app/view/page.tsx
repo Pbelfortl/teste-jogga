@@ -6,15 +6,21 @@ import { useState } from "react";
 import { Status } from "@prisma/client";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useRouter } from "next/navigation";
 
 export default function View() {
 
     const { leads, changeLeadStatus, filterLeadsByDate, filterLeadsByStatus, filterLeadsByName } = useLeads();
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+    const router = useRouter();
 
     return (
         <>
-
+            <div className="fixed top-4 right-4">
+                <button className="bg-blue-500 text-white p-2 rounded" onClick={() => router.push("/")}>
+                    Adicionar Lead
+                </button>
+            </div>
             <div className="p-4 rounded-xl bg-linear-to-t bg-black/30 shadow-xl backdrop-blur-sm w-4/5 flex flex-col gap-4 justify-center">
                 <div className="p-4 flex justify-between rounded-md bg-black/40 pb-2">
                     <input className="p-1 rounded-md border-1 border-black" placeholder="Buscar..." onChange={(e) => filterLeadsByName(e.target.value)}></input>
