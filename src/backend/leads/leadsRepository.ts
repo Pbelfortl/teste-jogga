@@ -47,6 +47,49 @@ export async function getLeadByEmail(email: string) {
     }
 }
 
+export async function getLeadByDate(date: Date) {
+    try {
+        const leads = await prisma.lead.findMany({
+            where: {
+                createdAt: {gte: date}
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching lead by date:", error);
+        throw new Error("Could not fetch lead");
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+export async function getLeadByStatus(status: Status) {
+    try {
+        const leads = await prisma.lead.findMany({
+            where: { status },
+        });
+        return leads;
+    } catch (error) {
+        console.error("Error fetching lead by status:", error);
+        throw new Error("Could not fetch lead");
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+export async function getLeadByName(name: string) {
+    try {
+        const leads = await prisma.lead.findMany({
+            where: { name: { contains: name, mode: 'insensitive' } },
+        });
+        return leads;
+    } catch (error) {
+        console.error("Error fetching lead by name:", error);
+        throw new Error("Could not fetch lead");
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
 export async function changeLeadStatus(id: number, status: Status) {
     try {
         const lead = await prisma.lead.update({

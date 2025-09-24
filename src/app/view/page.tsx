@@ -1,16 +1,72 @@
 'use client'
+import Image from "next/image";
+import Pulse from "../../../public/Pulse.svg";
 import  useLeads  from "../hooks/useLeads";
+import { useState } from "react";
 
 export default function View() {
 
-    const { leads } = useLeads();
+    const [statusFilter, setStatusFilter] = useState("");
+    const [dateFilter, setDateFilter] = useState("");
+    const [searchFilter, setSearchFilter] = useState("");
+    const [filter, setFilter] = useState("");
+
+    const { leads, changeLeadStatus } = useLeads();
+    console.log(leads);
+
+    if (statusFilter) {
+        leads.filter(lead => lead.status === statusFilter);
+    }
+
+/*     function applyFilters() {
+        let filteredLeads = leads;
+        if (statusFilter) {
+            filteredLeads = filteredLeads.filter(lead => lead.status === statusFilter);
+        }
+        if (dateFilter) {
+            filteredLeads = filteredLeads.filter(lead => {
+                const leadDate = new Date(lead.createdAt);
+                const filterDate = new Date(dateFilter);
+                return leadDate.toDateString() === filterDate.toDateString();
+            });
+        }
+        if (searchFilter) {
+            filteredLeads = filteredLeads.filter(lead =>
+                lead.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+                lead.email.toLowerCase().includes(searchFilter.toLowerCase()) ||
+                lead.telefone.toLowerCase().includes(searchFilter.toLowerCase())
+            );
+        }
+        return filteredLeads;
+    } */
 
     return (
-        <div>
-            <h1>View Leads</h1>
-            <ul>
+        <div className="w-2/3 flex flex-col gap-4 center">
+            {leads.length === 0 && <Image src={Pulse} alt="Loading" width={100} height={100} />}
+            <div className="w-full flex justify-between">
+                <input onChange={(e) => setFilter(e.target.value)}></input>
+                <select onChange={(e) => setFilter(e.target.value)}>
+                    <option value="">Todos</option>
+                    <option value="NEW">Novos</option>
+                    <option value="IN_CONTACT">Em contato</option>
+                    <option value="WON">Convertidos</option>
+                </select>
+                <input type="date" onChange={(e) => setDateFilter(e.target.value)}></input>
+            </div>
+            <ul className="gap-6 w-full">
                 {leads.map(lead => (
-                    <li key={lead.id}>{lead.name} - {lead.email} - {lead.telefone}</li>
+                    <li className=" flex justify-between" key={lead.id}>
+                        Nome: {lead.name} | 
+                        Email: {lead.email} | 
+                        Telefone: {lead.telefone} |
+                        Data: {(lead.createdAt).toDateString()}|
+                        Status: <select onChange={(e) => (changeLeadStatus(Number(lead.id), e.target.value)
+                        )} value={lead.status}>
+                            <option value={"NEW"}>Novo</option>
+                            <option value={"IN_CONTACT"}>Em contato</option>
+                            <option value={"WON"}>Convertido</option>
+                            </select>
+                    </li>
                 ))}
             </ul>
         </div>

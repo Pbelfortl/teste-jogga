@@ -15,14 +15,15 @@ export default function Home () {
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+  
     await saveLead({ name, email, telefone: phone } as Lead).catch(error => {
-      alert(`${error}`);
-      console.error("Error saving lead:", error);
+      alert(`${error}. Em breve entraremos em contato.`);
       setLoading(false);
       return;
-    }).then(() => {
+    }).then((res) => {
       setLoading(false);
-      //window.location.href = `https://wa.me/5587999363958?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20sua%20aplica%C3%A7%C3%A3o%20de%20capta%C3%A7%C3%A3o%20de%20leads!`
+      console.log(res);
+      window.location.href = `https://wa.me/5587999363958?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20sua%20aplica%C3%A7%C3%A3o%20de%20capta%C3%A7%C3%A3o%20de%20leads!`
     });
   }
 

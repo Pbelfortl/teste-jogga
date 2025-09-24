@@ -4,4 +4,5 @@ export type Lead = {
     email: string;
     telefone: string;
     status?: string;
+    createdAt?: any;
 };
