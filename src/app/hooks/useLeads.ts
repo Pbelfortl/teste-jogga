@@ -58,5 +58,5 @@ export default function useLeads() {
         setLeads(filteredLeads);
     }
 
-    return { leads, saveLead, viewLeads, changeLeadStatus, refreshLeads, filterLeadsByStatus, filterLeadsByDate };
+    return { leads, saveLead, viewLeads, changeLeadStatus, refreshLeads, filterLeadsByStatus, filterLeadsByDate, filterLeadsByName };
 }

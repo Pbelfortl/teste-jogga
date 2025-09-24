@@ -3,6 +3,7 @@ import Image from "next/image";
 import Pulse from "../../../public/Pulse.svg";
 import  useLeads  from "../hooks/useLeads";
 import { useState } from "react";
+import { Status } from "@prisma/client";
 
 export default function View() {
 
@@ -11,7 +12,7 @@ export default function View() {
     const [searchFilter, setSearchFilter] = useState("");
     const [filter, setFilter] = useState("");
 
-    const { leads, changeLeadStatus } = useLeads();
+    const { leads, changeLeadStatus, filterLeadsByDate, filterLeadsByStatus, filterLeadsByName } = useLeads();
     console.log(leads);
 
     if (statusFilter) {
@@ -44,14 +45,14 @@ export default function View() {
         <div className="w-2/3 flex flex-col gap-4 center">
             {leads.length === 0 && <Image src={Pulse} alt="Loading" width={100} height={100} />}
             <div className="w-full flex justify-between">
-                <input onChange={(e) => setFilter(e.target.value)}></input>
-                <select onChange={(e) => setFilter(e.target.value)}>
+                <input onChange={(e) => filterLeadsByName(e.target.value)}></input>
+                <select onChange={(e) => filterLeadsByStatus(e.target.value as Status)}>
                     <option value="">Todos</option>
                     <option value="NEW">Novos</option>
                     <option value="IN_CONTACT">Em contato</option>
                     <option value="WON">Convertidos</option>
                 </select>
-                <input type="date" onChange={(e) => setDateFilter(e.target.value)}></input>
+                <input type="date" onChange={(e) => filterLeadsByDate(e.target.value)}></input>
             </div>
             <ul className="gap-6 w-full">
                 {leads.map(lead => (
