@@ -49,6 +49,7 @@ export default function useLeads() {
     }
 
     async function filterLeadsByDate(date: Date) {
+
         const filteredLeads = await Backend.leads.viewByDate(date);
         setLeads(filteredLeads);
     }

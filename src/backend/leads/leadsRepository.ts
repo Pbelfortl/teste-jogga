@@ -47,7 +47,7 @@ export async function getLeadByEmail(email: string) {
     }
 }
 
-export async function getLeadByDate(date: Date) {
+export async function getLeadByDate(date: Date ) {
     try {
         const leads = await prisma.lead.findMany({
             where: {

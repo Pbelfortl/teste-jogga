@@ -20,11 +20,11 @@ export default function View() {
                     <input className="p-1 rounded-md border-1 border-black" placeholder="Buscar..." onChange={(e) => filterLeadsByName(e.target.value)}></input>
                     <div className="rounded-md p-1 border-1 border-black flex justify-center align-middle hover:cursor-pointer">
                         <DatePicker selected={selectedDate} onChange={(date) => {
-                        setSelectedDate(date);
-                        filterLeadsByDate(new Date(date));
-                    }} />
+                            setSelectedDate(date);
+                            filterLeadsByDate(date as Date);
+                        }} />
                     </div>
-                    <select className="rounded-md p-1 border-1 border-black" onChange={(e) => filterLeadsByStatus(e.target.value)} defaultValue="">
+                    <select className="rounded-md p-1 border-1 border-black" onChange={(e) => filterLeadsByStatus(e.target.value as Status)} defaultValue="">
                         <option className="text-black" value="">Todos</option>
                         <option className="text-black" value="NEW">Novos</option>
                         <option className="text-black" value="IN_CONTACT">Em contato</option>
