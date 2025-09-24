@@ -33,13 +33,13 @@ export default function Home() {
 
   return (
     <div className="flex justify-between items-center h-screen w-2/3 bg-no-repeat p-6 gap-4">
-      <div className="fixed top-4 right-4">
+      <div className="fixed top-4 right-4 hover:cursor-pointer">
         <button className="bg-blue-500 text-white p-2 rounded" onClick={() => router.push("/view")}>
           Gerenciar Leads
         </button>
       </div>
       <h1 className="text-4xl font-bold text-blue-500 font-sans">A melhor solução em captação de leads.<br /><br /> Entre em contato conosco!</h1>
-      <div className="bg-white/40 shadow-xl backdrop-blur-sm rounded-xl w-2/3 flex flex-col gap-4 justify-between p-8 items-center">
+      <div className="bg-white/40 shadow-xl backdrop-blur-sm rounded-xl w-2/3 flex flex-col gap-8 justify-between p-8 items-center">
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center text-black">
           <input className="bg-white p-2 rounded-xl " type="text" name="name" placeholder="Nome" value={name} onChange={e => setName(e.target.value)} />

@@ -16,7 +16,7 @@ export default function View() {
 
     return (
         <>
-            <div className="fixed top-4 right-4">
+            <div className="fixed top-4 right-4 hover:cursor-pointer">
                 <button className="bg-blue-500 text-white p-2 rounded" onClick={() => router.push("/")}>
                     Adicionar Lead
                 </button>
